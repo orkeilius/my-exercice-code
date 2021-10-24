@@ -1,22 +1,42 @@
 import sys
-import math
-import time
+
+class Factory():
+    """
+    class for factory data
+    ------
+    owner : factory owner
+    bot : number of bot in the factory
+    prod : production of the factory
+    cooldown : cooldown before the factory restart
+    link : (destination of link ; distance from destination)
+    """
+    def __init__(self):
+        self.link = []
+      
+    def linkTo(self,des,dis):
+        self.link.append((des,dis))
+    
+    def update(self,arg0,arg1,arg2,arg3,arg4):
+        self.owner = int(arg0)
+        self.bot = int(arg1)
+        self.prod = int(arg2)
+        self.cooldown = int(arg3)
+        self.id = int(arg4)
 
 factory_count = int(input())  # the number of factories
 link_count = int(input())  # the number of links between factories
-factory_link = []
+factorys = [Factory() for i in range(factory_count)]
 
-#get all link
+# make link
 for i in range(link_count):
-    link = [int(j) for j in input().split()]
-    factory_link.append(link.copy())
-    factory_link.append([link[1],link[0],link[2]])
+    l = [int(j) for j in input().split()]
+    factorys[l[0]].linkTo(l[1],l[2])
+    factorys[l[1]].linkTo(l[0],l[2])
 
+# * main loop
 while True:
-    start = time.time()
 
     # collect data
-    factory_data = [[] for factory in range(factory_count)]
     troop_data = []
     entity_count = int(input())  
     for i in range(entity_count):
@@ -26,41 +46,31 @@ while True:
         
         #factory entity
         if entity_type == "FACTORY":
-            factory_data[entity_id] = [int(inputs[2]),int(inputs[3]),int(inputs[4])]
+            factorys[entity_id].update(*inputs[2:6],entity_id)
         
         #troop entity
         elif entity_type == "TROOP":
             if int(inputs[2]) == 1:
                 troop_data.append(int(inputs[4]))
             else:
-                factory_data[2][1] += int(inputs[5])
-
-                
-
-    print("WAIT",end="")
-    move = None
-    
-
+                factorys[int(inputs[2])].bot += int(inputs[5])
 
     # get possible action
-
     move = [-1,0,0,-10]
-    for f in range(len(factory_data)):
-        #print(factory_data[f][0], file=sys.stderr, flush=True)
-        if factory_data[f][0] == 1:
-            for link in factory_link:
-                #print("_",factory_data[link[1]][0], file=sys.stderr, flush=True)
-                if link[0] == f and (factory_data[link[1]][0] != 1):
-                    if factory_data[link[1]][1] +1 <= factory_data[f][1] and not link[1]  in troop_data:
+    for f in factorys:
+        if f.owner == 1:
+            for link in f.link:
+                print(link,file=sys.stderr, flush=True)
+                if factorys[link[0]].owner != 1:
+                    if factorys[link[0]].bot + 1 <= f.bot and not link[0] in troop_data:
+
                         # set priority
-                        print(link[0],troop_data, file=sys.stderr, flush=True)
-                        priority = (factory_data[link[1]][2]*3) * (abs(factory_data[link[1]][0]) * 2) / ((factory_data[link[1]][1] + 1)) * (link[2] / 5)
+                        priority = (factorys[link[0]].prod * 3) * (abs(factorys[link[0]].owner) * 2) / ((factorys[link[0]].bot + 1)) * (link[1] / 5)
                         if move[3] < priority:
-                            move = [f,link[1],factory_data[link[1]][1] +1,priority]
+                            move = [f.id,link[0],factorys[link[0]].bot +1,priority]
+    
+    # output
+    print("WAIT",end="")
     if move[0] != -1:
         print(";MOVE {} {} {}".format(move[0],move[1],move[2]),end="")
     print("")
-
-    factory_data[move[0]][1] -= move[2]
-    factory_data[move[1]][1] = 99999999
-    #print(time.time())
