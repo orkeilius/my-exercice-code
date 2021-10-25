@@ -58,21 +58,22 @@ while True:
             else:
                 factorys[int(inputs[2])].bot += int(inputs[5])
 
-    # get possible action
+    # get all possible action
     move = [-1, 0, 0, -10]
     for f in factorys:
         if f.owner == 1:
             for link in f.link:
-                print(link, file=sys.stderr, flush=True)
                 if factorys[link[0]].owner != 1:
-                    if factorys[link[0]].bot + 1 <= f.bot and not link[0] in troop_data:
+                    # get minimun bot to get the factory
+                    requiredBot = factorys[link[0]].bot + \
+                        (factorys[link[0]].prod * link[1]) + 1
+                    if requiredBot <= f.bot and not link[0] in troop_data:
 
                         # set priority
                         priority = (factorys[link[0]].prod * 3) * (abs(factorys[link[0]].owner) * 2) / (
-                            (factorys[link[0]].bot + 1)) * (link[1] / 5)
+                            (requiredBot * 0.1)) * (link[1] / 5)
                         if move[3] < priority:
-                            move = [f.id, link[0],
-                                    factorys[link[0]].bot + 1, priority]
+                            move = [f.id, link[0], requiredBot, priority]
 
     # output
     print("WAIT", end="")
