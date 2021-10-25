@@ -5,8 +5,12 @@ def check(text):
     closing = ")]}>"
     state = ""
     for t in text:
+
+        # add to var in state
         if t in opening:
             state = closing[opening.find(t)] + state
+        
+        # check if the closing bracket match the opening
         elif t in closing:
             if state == "":
                 print("no")
@@ -17,6 +21,7 @@ def check(text):
                 print("no")
                 return
     
+    #check if the all bracket are closed
     if state == "":
         print("yes")
     else:
