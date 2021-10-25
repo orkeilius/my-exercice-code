@@ -1,6 +1,5 @@
 import sys
 
-
 class Factory():
     """
     class for factory data
@@ -70,8 +69,8 @@ while True:
                     if requiredBot <= f.bot and not link[0] in troop_data:
 
                         # set priority
-                        priority = (factorys[link[0]].prod * 3) * (abs(factorys[link[0]].owner) * 2) / (
-                            (requiredBot * 0.1)) * (link[1] / 5)
+                        priority = (factorys[link[0]].prod / 3 * 10) + (abs(factorys[link[0]].owner) * 5) - (
+                            (requiredBot * 0.1)) + (link[1] / 5)
                         if move[3] < priority:
                             move = [f.id, link[0], requiredBot, priority]
 
