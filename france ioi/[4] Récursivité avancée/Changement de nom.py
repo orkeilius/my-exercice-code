@@ -1,0 +1,1 @@
+#http://www.france-ioi.org/algo/task.php?idChapter=530&idTask=358
