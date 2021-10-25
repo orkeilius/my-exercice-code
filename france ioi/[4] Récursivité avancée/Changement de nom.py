@@ -16,7 +16,6 @@ def enum(depth, string):
 # get input
 letter_size = int(input())
 letters = list(input())
-letters.sort()
 output_size = int(input())
 
 # return number of possible name
