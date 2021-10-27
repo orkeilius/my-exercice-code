@@ -5,13 +5,12 @@ def iter(nb,depth):
     global t
     if depth != 0:
         for i in range(nb):
-            iter(i,depth + 1)
+            iter(i,depth -1)
     else:
         t += nb
-        print(nb)
 
 nbCard = int(input())
 nbRoll = int(input())
 t = 0
-iter(nbCard,nbRoll)
+iter(nbCard,nbRoll - 1)
 print(t)
