@@ -3,7 +3,12 @@
 
 dimensions = list(map(int, input().split()))
 
-for i in range(min(dimensions), 0, -1):
-    if dimensions[0] // i == dimensions[0] / i and dimensions[1] // i == dimensions[1] / i:
-        print(i)
-        break
+# implantation of euclid's algorithm
+def euclid(a, b):
+    if b == 0 :
+        return a
+    else:
+        euclid(b, a % b)
+
+u = euclid(*dimensions)
+print(u)
