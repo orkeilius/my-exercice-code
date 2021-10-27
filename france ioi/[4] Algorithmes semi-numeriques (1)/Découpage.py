@@ -7,8 +7,6 @@ dimensions = list(map(int, input().split()))
 def euclid(a, b):
     if b == 0 :
         return a
-    else:
-        euclid(b, a % b)
+    return euclid(b, a % b)
 
-u = euclid(*dimensions)
-print(u)
+print(euclid(*dimensions))
