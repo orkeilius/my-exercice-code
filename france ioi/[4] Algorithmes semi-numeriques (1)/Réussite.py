@@ -4,7 +4,7 @@ import sys
 # i use sys here because the output must be very fast
 def primes(n):
     """ 
-    this prime finders have been fond only (not mine)
+    this prime finders have been found online (not mine)
     credit : https://stackoverflow.com/a/3035188/16254121
     Returns  a list of primes < n 
     """
