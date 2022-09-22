@@ -1,7 +1,7 @@
 //dummy fonction for vscode do not copy
 function readline() {
     return ""
-}
+};
 
 
 interface Point {
@@ -9,7 +9,14 @@ interface Point {
     exit: boolean;
     origin: number;
     heat: number;
-}
+};
+
+interface link {
+    //used only for bestLink
+    heat: number;
+    start: number;
+    end: number;
+};
 
 var inputs: number[] = readline().split(' ').map(x => parseInt(x));
 const nbNode: number = inputs[0]; // the total number of nodes in the level, including the gateways
@@ -24,55 +31,54 @@ for (let i = 0; i < nbNode; i++) {
         exit: false,
         origin: 0,
         heat: 0
-    })
-}
+    });
+};
 
 //get link
 for (let i = 0; i < nbLink; i++) {
     var inputs: number[] = readline().split(' ').map(x => parseInt(x));
-    graph[inputs[0]].links.push(inputs[1])
-    graph[inputs[1]].links.push(inputs[0])
-}
+    graph[inputs[0]].links.push(inputs[1]);
+    graph[inputs[1]].links.push(inputs[0]);
+};
 
 //Add gateways
 for (let i = 0; i < nbExit; i++) {
-    var e = parseInt(readline())
+    var e = parseInt(readline());
     graph[e].exit = true; // the index of a gateway node
-}
+};
 
 // game loop
 while (true) {
-    const SI: number = parseInt(readline()); // The index of the node on which the Bobnet agent is positioned this turn
-    var bestLink: number[] = [-1000, 0, 0];
-    var queue: number[] = [SI]
-    var visited: number[] = []
+    const SI: number = parseInt(readline()); // The index of the node on which the Botnet agent is positioned this turn
+    var bestLink: link = { heat: -1000, start: 0, end: 0 };
+    var queue: number[] = [SI];
+    var visited: number[] = [];
     while (queue.length != 0) {
-        graph[queue[0]].heat = graph[graph[queue[0]].origin].heat - 1;
-        graph[queue[0]].links.forEach(element => {
+        var actualNode: number = queue.shift()!;
+        graph[actualNode].heat = graph[graph[actualNode].origin].heat - 1;
+        graph[actualNode].links.forEach(element => {
             if (!(visited.includes(element))) {
+                // exit node
                 if (graph[element].exit) {
-                    graph[queue[0]].heat++;
+                    graph[actualNode].heat++;
 
-                    if (bestLink[0] < graph[queue[0]].heat) {
-                        bestLink = [graph[queue[0]].heat, queue[0], element]
+                    if (bestLink.heat < graph[actualNode].heat) {
+                        bestLink = { heat: graph[actualNode].heat, start: actualNode, end: element };
                     }
                 }
+                //normal node
                 else {
-                    graph[element].origin = queue[0];
+                    graph[element].origin = actualNode;
                     queue.push(element);
                     visited.push(element);
-                }
-            }
-            
+                };
+            };
         });
-
-
-        queue.shift()
-    }
-    console.log(bestLink[1] + " " + bestLink[2])
-    console.error(graph)
+    };
+    console.log(bestLink.start + " " + bestLink.end);
+    console.error(graph);
 
     //delete cut nodes
-    graph[bestLink[1]].links.splice(graph[bestLink[1]].links.indexOf(bestLink[2]), 1)
-    graph[bestLink[2]].links.splice(graph[bestLink[1]].links.indexOf(bestLink[1]), 1)
+    graph[bestLink.start].links.splice(graph[bestLink.start].links.indexOf(bestLink.end), 1);
+    graph[bestLink.end].links.splice(graph[bestLink.end].links.indexOf(bestLink.start), 1);
 }
