@@ -1,9 +1,3 @@
-//dummy fonction for vscode do not copy
-function readline() {
-    return ""
-};
-
-
 interface Point {
     links: number[];
     exit: boolean;
@@ -47,15 +41,19 @@ for (let i = 0; i < nbExit; i++) {
     graph[e].exit = true; // the index of a gateway node
 };
 
+// heat = heat of the previous node - 1 (because further) + exit node link to it
+//the the node with the most heat will have a link cut
+
 // game loop
 while (true) {
     const SI: number = parseInt(readline()); // The index of the node on which the Botnet agent is positioned this turn
-    var bestLink: link = { heat: -1000, start: 0, end: 0 };
+    var bestLink: link = { heat: -9999, start: 0, end: 0 };
     var queue: number[] = [SI];
     var visited: number[] = [];
     while (queue.length != 0) {
         var actualNode: number = queue.shift()!;
         graph[actualNode].heat = graph[graph[actualNode].origin].heat - 1;
+        
         graph[actualNode].links.forEach(element => {
             if (!(visited.includes(element))) {
                 // exit node
@@ -75,10 +73,13 @@ while (true) {
             };
         });
     };
-    console.log(bestLink.start + " " + bestLink.end);
-    console.error(graph);
+    console.log(bestLink.start + " " + bestLink.end)
 
     //delete cut nodes
     graph[bestLink.start].links.splice(graph[bestLink.start].links.indexOf(bestLink.end), 1);
     graph[bestLink.end].links.splice(graph[bestLink.end].links.indexOf(bestLink.start), 1);
 }
+
+
+//! dummy fonction for vscode do not copy
+function readline() {return ""};
