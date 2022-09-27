@@ -1,6 +1,10 @@
 import sys
 import math
 
+'''A algorithme working at 71% (on map with low overlapping path)
+    but way faster that the new one
+    not refactored
+    '''
 width, height = [int(i) for i in input().split()]
 golfMap = []
 balls = [] # [[posY posX,nbShot]]
