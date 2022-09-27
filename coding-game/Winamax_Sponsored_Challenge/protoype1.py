@@ -1,7 +1,6 @@
 import sys
 import math
 
-
 width, height = [int(i) for i in input().split()]
 golfMap = []
 balls = [] # [[posY posX,nbShot]]
