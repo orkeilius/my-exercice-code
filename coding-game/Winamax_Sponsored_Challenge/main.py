@@ -3,21 +3,20 @@ import copy
 
 
 width, height = [int(i) for i in input().split()]
+
+
+#get golf's map info and balls
 golfMap = []
 balls = [] # [[posY posX,nbShot]]
-
-#get golfmap info and balls
 for y in range(height):
     golfMap.append(input())
     for x in range(width):
         if golfMap[y][x] in "123456789":
             balls.append([y,x,int(golfMap[y][x])])
-
-[print("".join(i),file=sys.stderr) for i in golfMap] 
-[print("b",i,file=sys.stderr) for i in balls]
+            
+            
 #calculate every paths 
 paths = []
-
 def findMove(ball,moveHistory,lastDirection):
     global paths
     #i should use match/case but is not supported on condingame yet
@@ -42,18 +41,16 @@ def findMove(ball,moveHistory,lastDirection):
 for ball in balls:
     paths.append([])
     findMove(ball,[[ball[0],ball[1]]],0)
- 
-#apply path | ball with few path will be apply first
-print(paths ,file=sys.stderr)
 
+
+#apply path | if not path working path the previous path is canceled
+#ball with few path will be apply first a
 def applyPath(path,moveMap):
     #apply path with the index of the ball. -1 définitif pat
     pos = path[0].copy()
     for move in path[1:]:
         for i in range(move[2]):
             if not moveMap[pos[0]][pos[1]] in ".H":
-                print(pos,file=sys.stderr)
-                print(moveMap,file=sys.stderr)
                 return -1
             if move[0] == 1:
                 moveMap[pos[0]][pos[1]] = "v"
@@ -66,15 +63,12 @@ def applyPath(path,moveMap):
             pos[1] += move[1]
             pos[0] += move[0]
         if moveMap[pos[0]][pos[1]] != ".":
-                
                 return -1
     moveMap[pos[0]][pos[1]] = "U"
     return moveMap
 
 def bruteforcePath(pathIndex, moveMap):
     global solved
-    print("*" * pathIndex, file=sys.stderr)
-    print(paths,file=sys.stderr)
     if moveMap == -1:
         return False
     if pathIndex == len(paths) :
@@ -87,7 +81,6 @@ def bruteforcePath(pathIndex, moveMap):
 solved = [] 
 #sort paths by number of path to have less try
 paths.sort(key=lambda x : len(x))
-liste = []
 liste = [(["."] * width) for i in range(height)]
 
 bruteforcePath(0, liste)
