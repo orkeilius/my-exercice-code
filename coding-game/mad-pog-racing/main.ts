@@ -4,7 +4,7 @@ function readline() {
 };
 
 //ia setting
-const DISTANCEBOOST: number = 8000
+const DISTANCEBOOST: number = 8000 // distance from next checkpoint to enable boost
 
 
 function getDistance(x1:number, y1:number, x2:number, y2:number) {
