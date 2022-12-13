@@ -1,4 +1,4 @@
-import unittest, mock
+import mock
 import main
 
 def test_all():

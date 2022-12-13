@@ -9,7 +9,7 @@ def main():
             films.remove(input())
         except ValueError:
             pass
-    print(len(films))
-    #return len(films)
+    #print(len(films))
+    return len(films)
 if __name__ == "__main__":
     main()
