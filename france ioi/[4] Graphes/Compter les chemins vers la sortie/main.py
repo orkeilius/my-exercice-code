@@ -13,10 +13,10 @@ def dfs(size,plane,pos):
     for move in MOVES:
         nextPos = [pos[0] + move[0], pos[1] + move[1]]
         if plane[nextPos[0]][nextPos[1]] == "@":
-            return 1 
+            total += 1 
         if plane[nextPos[0]][nextPos[1]] == ".":
-            nextPlane = copy.deepcopy(plane)
-            total += dfs(size,nextPlane,nextPos)
+            total += dfs(size,plane,nextPos)
+    plane[pos[0]][pos[1]] = "."
     return total
 
 
