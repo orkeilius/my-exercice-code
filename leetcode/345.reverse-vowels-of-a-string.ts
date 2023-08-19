@@ -5,22 +5,27 @@
  */
 
 // @lc code=start
-let vowelsList = ["a","e","u","i","o"]
+let vowelsList = new Set("aeuioAEUIO".split(""))
 function reverseVowels(s: string): string {
 
-    let Vowels:string[] = []
-    for (let i = 0; i < s.length; i++) {
-        if (vowelsList.includes( s.charAt(i).toLowerCase())) {
-            Vowels.push(s.charAt(i))
+    let low = 0
+    let high = s.length - 1
+    let text: string[] = s.split("")
+    while (low < high) {
+        while (!vowelsList.has( text[low]) && low < high) {
+            low++
         }
-    }
-    for (let i = 0; i < s.length; i++) {
-        if (vowelsList.includes( s.charAt(i).toLowerCase())) {
-            s= s.slice(0, i) + Vowels.pop() + s.slice(i+1);
+        while (!vowelsList.has( text[high]) && low < high) {
+            high--
         }
+        // console.log(low,high)
+        let temp = text[low]
+        text[low] = text[high] 
+        text[high] = temp
+        
+        low++
+        high--
     }
-    return s
-
+    return text.join("")
 };
 // @lc code=end
-
