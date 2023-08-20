@@ -8,17 +8,13 @@
 function isSubsequence(s: string, t: string): boolean {
     let iSub = 0
     let iText = 0
-    if(s == ""){return true}
-    while (iText < t.length) {
+    while (iText < t.length && iSub < s.length) {
         if (t[iText] == s[iSub]) {
             iSub++
-            if (iSub == s.length) {
-                return true
-            }
         }        
         iText++
     }
-    return false
+    return iSub == s.length
 };
 // @lc code=end
 
